@@ -8,8 +8,6 @@
 
 	spawn_branch_types = list(
 		/datum/mil_branch/expeditionary_corps,
-		/datum/mil_branch/fleet,
-		/datum/mil_branch/marine_corps,
 		/datum/mil_branch/civilian
 	)
 
@@ -23,27 +21,12 @@
 		/datum/species/vox     = list()
 	)
 
-	species_to_branch_blacklist = list(
-		/datum/species/machine 	= list(/datum/mil_branch/marine_corps),
-		/datum/species/tajaran	= list(/datum/mil_branch/marine_corps, /datum/mil_branch/fleet),
-		/datum/species/skrell 	= list(/datum/mil_branch/marine_corps, /datum/mil_branch/fleet),
-		/datum/species/resomi 	= list(/datum/mil_branch/marine_corps, /datum/mil_branch/fleet),
-	)
-
 	species_to_rank_whitelist = list(
 		/datum/species/machine = list(
 			/datum/mil_branch/expeditionary_corps = list(
 				/datum/mil_rank/ec/e2,
 				/datum/mil_rank/ec/e4,
 				/datum/mil_rank/ec/o1
-			)
-			/datum/mil_branch/fleet = list(
-				/datum/mil_rank/fleet/e1,
-				/datum/mil_rank/fleet/e2,
-				/datum/mil_rank/fleet/e3,
-				/datum/mil_rank/fleet/e4,
-				/datum/mil_rank/fleet/e5,
-				/datum/mil_rank/fleet/o1
 			)
 		),
 		/datum/species/tajaran = list(
@@ -68,18 +51,6 @@
 				/datum/mil_rank/ec/o3,
 				/datum/mil_rank/ec/o5,
 				/datum/mil_rank/ec/o6
-			)
-			/datum/mil_branch/fleet = list(
-				/datum/mil_rank/fleet/e6,
-				/datum/mil_rank/fleet/e7,
-				/datum/mil_rank/fleet/e8,
-				/datum/mil_rank/fleet/e9,
-				/datum/mil_rank/fleet/e9_alt1,
-				/datum/mil_rank/fleet/o2,
-				/datum/mil_rank/fleet/o3,
-				/datum/mil_rank/fleet/o4,
-				/datum/mil_rank/fleet/o5,
-				/datum/mil_rank/fleet/o6
 			)
 		),
 		/datum/species/tajaran = list(

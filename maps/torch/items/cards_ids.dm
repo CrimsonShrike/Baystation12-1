@@ -98,7 +98,6 @@
 /obj/item/weapon/card/id/torch/contractor/supply
 	job_access_type = /datum/job/cargo_contractor
 
-
 /obj/item/weapon/card/id/torch/crew/service //unused
 	job_access_type = /datum/job/assistant
 
@@ -117,12 +116,8 @@
 /obj/item/weapon/card/id/torch/contractor/service/bartender
 	job_access_type = /datum/job/bartender
 
-
 /obj/item/weapon/card/id/torch/crew/representative
 	job_access_type = /datum/job/representative
-
-/obj/item/weapon/card/id/torch/crew/sea
-	job_access_type = /datum/job/sea
 
 /obj/item/weapon/card/id/torch/crew/bridgeofficer
 	job_access_type = /datum/job/bridgeofficer
