@@ -7,6 +7,7 @@
 	density = 1
 	anchored = 1
 	var/use_left = 1
+	var/random_name = FALSE
 	var/list/rights_required
 	var/list/species_can_only_use
 
@@ -42,7 +43,6 @@
 
 	if(alert("Would you like to spawn?",,"Yes","No") == "No") return
 
-	// Все проверки пройдены, начинаем подготавливать игрока к созданию его/её тела
 	spawn_procedure(C)
 
 /obj/cryo_spawner/proc/spawn_procedure(client/C)
@@ -64,7 +64,6 @@
 
 	C.prefs.copy_to(new_character)
 
-	new_character.name = C.prefs.real_name
 	new_character.dna.ready_dna(new_character)
 	new_character.dna.b_type = C.prefs.b_type
 
@@ -74,6 +73,12 @@
 	new_character.regenerate_icons()
 
 	new_character.key = C.key
+
+	if(random_name)
+//		C.prefs.real_name = getrandom_name(gender)
+		new_character.name = random_name(gender)
+	else
+		new_character.name = C.prefs.real_name
 
 	if(use_left >= 0)
 		use_left--
@@ -86,7 +91,7 @@
 /obj/cryo_spawner/proc/equip_character(mob/living/carbon/human/H, is_admin = 0)
 	return
 
-obj/cryo_spawner/update_icon()
+/obj/cryo_spawner/update_icon()
 	icon_state = "body_scanner_0"
 	sleep(10)
 	icon_state = initial(icon_state)

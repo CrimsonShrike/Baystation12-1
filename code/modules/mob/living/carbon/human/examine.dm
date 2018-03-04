@@ -35,6 +35,20 @@
 	var/datum/gender/T = gender_datums[get_gender()]
 	if(skipjumpsuit && skipface) //big suits/masks/helmets make it hard to tell their gender
 		T = gender_datums[PLURAL]
+
+	else if(species && species.ambiguous_genders)
+		var/can_detect_gender = FALSE
+		if(isobserver(user)) // Ghosts are all knowing.
+			can_detect_gender = TRUE
+		if(issilicon(user)) // Borgs are too because science.
+			can_detect_gender = TRUE
+		else if(ishuman(user))
+			var/mob/living/carbon/human/H = user
+			if(H.species && istype(species, H.species))
+				can_detect_gender = TRUE
+
+		if(!can_detect_gender)
+			T = gender_datums[PLURAL] // Species with ambiguous_genders will not show their true gender upon examine if the examiner is not also the same species.
 	else
 		if(icon)
 			msg += "\icon[icon] " //fucking BYOND: this should stop dreamseeker crashing if we -somehow- examine somebody before their icon is generated
@@ -216,7 +230,7 @@
 				break
 
 		if(hidden && user != src)
-			if(E.status & ORGAN_BLEEDING && !(hidden.item_flags & THICKMATERIAL)) //not through a spacesuit
+			if(E.status & ORGAN_BLEEDING && !(hidden.item_flags & ITEM_FLAG_THICKMATERIAL)) //not through a spacesuit
 				wound_flavor_text[hidden.name] = "<span class='danger'>[T.He] [T.has] blood soaking through [hidden]!</span><br>"
 		else
 			if(E.is_stump())
@@ -345,7 +359,7 @@
 	set desc = "Sets a description which will be shown when someone examines you."
 	set category = "IC"
 
-	pose =  sanitize(input(usr, "This is [src]. [get_visible_gender() == MALE ? "He" : get_visible_gender() == FEMALE ? "She" : "They"]...", "Pose", null)  as text)
+	pose =  sanitize(input(usr, "Это [src]. [get_visible_gender() == MALE ? "Он" : get_visible_gender() == FEMALE ? "Она" : "Оно"]...", "Pose", null)  as text)
 
 /mob/living/carbon/human/verb/set_flavor()
 	set name = "Set Flavour Text"

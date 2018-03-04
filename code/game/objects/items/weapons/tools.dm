@@ -23,7 +23,7 @@
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "wrench"
 	item_state = "wrench"
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	force = 5.0
 	throwforce = 7.0
@@ -36,6 +36,33 @@
 /obj/item/weapon/wrench/Initialize()
 	icon_state = "wrench[pick("","_red","_black")]"
 	. = ..()
+/obj/item/weapon/wrench/power
+	name = "hand drill"
+	desc = "A simple powered hand drill. It's fitted with a bolt bit."
+	icon = 'icons/obj/infinity_object.dmi'
+	icon_state = "drill_bolt"
+	item_state = "drill"
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	slot_flags = SLOT_BELT
+	matter = list(DEFAULT_WALL_MATERIAL = 5000, "silver" = 2000)
+	force = 8.0 //might or might not be too high, subject to change
+	w_class = ITEM_SIZE_NORMAL
+	origin_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+	throwforce = 8.0
+	center_of_mass = "x=17;y=16"
+	attack_verb = list("drilled", "screwed", "jabbed")
+	//usesound = 'sound/items/drill_use.ogg'
+
+/obj/item/weapon/wrench/power/attack_self(mob/user)
+	playsound(get_turf(user),'sound/items/change_drill.ogg',50,1)
+	var/obj/item/weapon/wirecutters/power/s_drill = new /obj/item/weapon/screwdriver/power
+	to_chat(user, "<span class='notice'>You attach the screw driver bit to [src].</span>")
+	qdel(src)
+	user.put_in_active_hand(s_drill)
+
+/obj/item/weapon/wrench/power/Initialize()
+        . = ..()
+        icon_state = "drill_bolt"
 
 /*
  * Screwdriver
@@ -48,7 +75,7 @@
 	description_antag = "In the world of breaking and entering, tools like multitools and wirecutters are the bread; the screwdriver is the butter. In a pinch, try targetting someone's eyes and stabbing them with it - it'll really hurt!"
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "screwdriver"
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT | SLOT_EARS
 	force = 4.0
 	w_class = ITEM_SIZE_TINY
@@ -97,6 +124,37 @@
 		M = user
 	return eyestab(M,user)
 
+/obj/item/weapon/screwdriver/power
+	name = "hand drill"
+	desc = "A simple powered hand drill. It's fitted with a screw bit."
+	icon = 'icons/obj/infinity_object.dmi'
+	icon_state = "drill_screw"
+	item_state = "drill"
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	slot_flags = SLOT_BELT
+	origin_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+	matter = list(DEFAULT_WALL_MATERIAL = 5000, "silver" = 2000)
+	force = 8 //might or might not be too high, subject to change
+	w_class = ITEM_SIZE_NORMAL
+	throwforce = 8
+	throw_speed = 2
+	throw_range = 3 //it's heavier than a screw driver/wrench, so it does more damage, but can't be thrown as far
+	center_of_mass = "x=16;y=7"
+	attack_verb = list("drilled", "screwed", "jabbed","whacked")
+	hitsound = 'sound/items/drill_hit.ogg'
+	//usesound = 'sound/items/drill_use.ogg'
+
+/obj/item/weapon/screwdriver/power/attack_self(mob/user)
+	playsound(get_turf(user),'sound/items/change_drill.ogg',50,1)
+	var/obj/item/weapon/wrench/power/b_drill = new /obj/item/weapon/wrench/power
+	to_chat(user, "<span class='notice'>You attach the bolt driver bit to [src].</span>")
+	qdel(src)
+	user.put_in_active_hand(b_drill)
+
+/obj/item/weapon/screwdriver/power/Initialize()
+        . = ..()
+        icon_state = "drill_screw"
+
 /*
  * Wirecutters
  */
@@ -108,7 +166,7 @@
 	description_antag = "These cutters can be used to cripple the power anywhere on the ship. All it takes is some creativity, and being in the right place at the right time."
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "cutters"
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	force = 3.0
 	throw_speed = 2
@@ -140,6 +198,38 @@
 	else
 		..()
 
+/obj/item/weapon/wirecutters/power
+	name = "jaws of life"
+	desc = "A set of jaws of life, compressed through the magic of science. It's fitted with a cutting head."
+	icon = 'icons/obj/tools.dmi'
+	icon_state = "jaws_cutter"
+	item_state = "jawsoflife"
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	slot_flags = SLOT_BELT
+	force = 15.0
+	throwforce = 10.0
+	throw_speed = 2.0
+	throw_range = 2.0
+	w_class = ITEM_SIZE_NORMAL
+	origin_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+	matter = list(DEFAULT_WALL_MATERIAL = 5000, "silver" = 2000)
+	center_of_mass = "x=18;y=10"
+	attack_verb = list("pinched", "nipped")
+	sharp = 1
+	edge = 1
+	//usesound = 'sound/items/jaws_cut.ogg'
+
+/obj/item/weapon/wirecutters/power/attack_self(mob/user)
+	playsound(get_turf(user), 'sound/items/change_jaws.ogg', 50, 1)
+	var/obj/item/weapon/crowbar/power/pryjaws = new /obj/item/weapon/crowbar/power
+	to_chat(user, "<span class='notice'>You attach the pry jaws to [src].</span>")
+	qdel(src)
+	user.put_in_active_hand(pryjaws)
+
+/obj/item/weapon/wirecutters/power/Initialize()
+        . = ..()
+        icon_state = "jaws_cutter"
+
 /*
  * Welding Tool
  */
@@ -152,7 +242,7 @@
 	description_info = "Use in your hand to toggle the welder on and off. Hold in one hand and click with an empty hand to remove its internal tank. Click on an object to try to weld it. You can seal airlocks, attach heavy-duty machines like emitters and disposal chutes, and repair damaged walls - these are only a few of its uses. Each use of the welder will consume a unit of fuel. Be sure to wear protective equipment such as goggles, a mask, or certain voidsuit helmets to prevent eye damage. You can refill the welder with a welder tank by clicking on it, but be sure to turn it off first!"
 	description_fluff = "One of many tools of ancient design, still used in today's busy world of engineering with only minor tweaks here and there. Compact machinery and innovations in fuel storage have allowed for conveniences like this one-piece, handheld welder to exist."
 	description_antag = "You can use a welder to rapidly seal off doors, ventilation ducts, and scrubbers. It also makes for a devastating weapon. Modify it with a screwdriver and stick some metal rods on it, and you've got the beginnings of a flamethrower."
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	center_of_mass = "x=14;y=15"
 
@@ -598,7 +688,7 @@
 	description_antag = "Need to bypass a bolted door? You can use a crowbar to pry the electronics out of an airlock, provided that it has no power and has been welded shut."
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "crowbar"
-	flags = CONDUCT
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	force = 7.0
 	throwforce = 7.0
@@ -628,6 +718,36 @@
 /obj/item/weapon/crowbar/prybar/Initialize()
 	icon_state = "prybar[pick("","_red","_green","_aubergine","_blue")]"
 	. = ..()
+
+/obj/item/weapon/crowbar/power
+	name = "jaws of life"
+	desc = "A set of jaws of life, compressed through the magic of science. It's fitted with a prying head."
+	icon = 'icons/obj/tools.dmi'
+	icon_state = "jaws_pry"
+	item_state = "jawsoflife"
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	slot_flags = SLOT_BELT
+	force = 15.0
+	throwforce = 10.0
+	throw_speed = 2.0
+	throw_range = 2.0
+	w_class = ITEM_SIZE_NORMAL
+	origin_tech = list(TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+	matter = list(DEFAULT_WALL_MATERIAL = 5000, "silver" = 2000)
+	center_of_mass = "x=18;y=10"
+	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
+	//usesound = 'sound/items/jaws_cut.ogg'
+
+/obj/item/weapon/crowbar/power/attack_self(mob/user)
+	playsound(get_turf(user), 'sound/items/change_jaws.ogg', 50, 1)
+	var/obj/item/weapon/wirecutters/power/cutjaws = new /obj/item/weapon/wirecutters/power
+	to_chat(user, "<span class='notice'>You attach the cutting jaws to [src].</span>")
+	qdel(src)
+	user.put_in_active_hand(cutjaws)
+
+/obj/item/weapon/crowbar/power/Initialize()
+        . = ..()
+        icon_state = "jaws_pry"
 
 /*
  * Combitool

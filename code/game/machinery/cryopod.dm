@@ -210,6 +210,7 @@
 	name = "life pod"
 	desc = "A man-sized pod for entering suspended animation. Dubbed 'cryocoffin' by more cynical spacers, it is pretty barebone, counting on stasis system to keep the victim alive rather than packing extended supply of food or air. Can be ordered with symbols of common religious denominations to be used in space funerals too."
 	on_store_name = "Life Pod Oversight"
+	density = 0
 	time_till_despawn = 20 MINUTES
 	icon_state = "redpod0"
 	base_icon_state = "redpod0"
@@ -311,7 +312,7 @@
 	if(occupant)
 		if(applies_stasis && iscarbon(occupant))
 			var/mob/living/carbon/C = occupant
-			C.SetStasis(20)
+			C.SetStasis(3)
 
 		//Allow a ten minute gap between entering the pod and actually despawning.
 		if(world.time - time_entered < time_till_despawn)
@@ -500,7 +501,7 @@
 	src.go_out()
 	add_fingerprint(usr)
 
-	name = initial(name)
+	SetName(initial(name))
 	return
 
 /obj/machinery/cryopod/verb/move_inside()
@@ -556,7 +557,7 @@
 /obj/machinery/cryopod/proc/set_occupant(var/mob/living/carbon/occupant)
 	src.occupant = occupant
 	if(!occupant)
-		name = initial(name)
+		SetName(initial(name))
 		return
 
 	occupant.stop_pulling()
@@ -568,7 +569,5 @@
 	occupant.forceMove(src)
 	time_entered = world.time
 
-	name = "[name] ([occupant])"
+	SetName("[name] ([occupant])")
 	icon_state = occupied_icon_state
-
-

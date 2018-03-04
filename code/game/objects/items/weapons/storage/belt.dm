@@ -8,7 +8,7 @@
 	max_w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT
 	attack_verb = list("whipped", "lashed", "disciplined")
-	sprite_sheets = list(SPECIES_RESOMI = 'icons/mob/species/resomi/belt.dmi')
+	sprite_sheets = list(SPECIES_RESOMI = 'icons/mob/onmob/Resomi/belt.dmi')
 
 /obj/item/weapon/storage/belt/verb/toggle_layer()
 	set name = "Switch Belt Layer"
@@ -27,7 +27,7 @@
 	var/image/ret = ..()
 	if(slot == slot_belt_str && contents.len)
 		for(var/obj/item/I in contents)
-			ret.overlays += image("icon" = 'icons/mob/belt.dmi', "icon_state" = "[I.item_state ? I.item_state : I.icon_state]")
+			ret.overlays += image("icon" = 'icons/mob/onmob/belt.dmi', "icon_state" = "[I.item_state ? I.item_state : I.icon_state]")
 	return ret
 
 /obj/item/weapon/storage/belt/utility
@@ -78,8 +78,6 @@
 	new /obj/item/weapon/crowbar(src)
 	new /obj/item/weapon/wirecutters(src)
 	new /obj/item/device/multitool(src)
-	new /obj/item/weapon/welder_tank(src)
-
 
 /obj/item/weapon/storage/belt/utility/atmostech/New()
 	..()
@@ -192,6 +190,15 @@
 	new /obj/item/ammo_magazine/mc9mmt(src)
 	new /obj/item/ammo_magazine/mc9mmt(src)
 	new /obj/item/ammo_magazine/mc9mmt(src)
+	new /obj/item/weapon/gun/projectile/sec/lethal(src)
+	new /obj/item/ammo_magazine/c45m(src)
+
+/obj/item/weapon/storage/belt/security/troops/sts/New()
+	..()
+	new /obj/item/ammo_magazine/c556(src)
+	new /obj/item/ammo_magazine/c556(src)
+	new /obj/item/ammo_magazine/c556(src)
+	new /obj/item/ammo_magazine/c556(src)
 	new /obj/item/weapon/gun/projectile/sec/lethal(src)
 	new /obj/item/ammo_magazine/c45m(src)
 

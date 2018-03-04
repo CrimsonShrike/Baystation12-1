@@ -184,7 +184,7 @@
 
 /obj/mecha/proc/add_radio()
 	radio = new(src)
-	radio.name = "[src] radio"
+	radio.SetName("[src] radio")
 	radio.icon = icon
 	radio.icon_state = icon_state
 	radio.subspace_transmission = 1
@@ -216,11 +216,7 @@
 
 
 /obj/mecha/proc/check_for_support()
-	if(locate(/obj/structure/grille, orange(1, src)) ||\
-		locate(/obj/structure/lattice, orange(1, src)) ||\
-		locate(/obj/structure/catwalk, orange(1, src)) ||\
-		locate(/turf/simulated, orange(1, src)) ||\
-		locate(/turf/unsimulated, orange(1, src)))
+	if(locate(/obj/structure/grille, orange(1, src)) || locate(/obj/structure/lattice, orange(1, src)) || locate(/turf/simulated, orange(1, src)) || locate(/turf/unsimulated, orange(1, src)))
 		return 1
 	else
 		return 0
@@ -1503,7 +1499,7 @@
 		if(usr != src.occupant)	return
 		var/newname = sanitizeSafe(input(occupant,"Choose new exosuit name","Rename exosuit",initial(name)) as text, MAX_NAME_LEN)
 		if(newname)
-			name = newname
+			SetName(newname)
 		else
 			alert(occupant, "nope.avi")
 		return
@@ -1634,7 +1630,7 @@
 		var/cur_occupant = src.occupant
 		O.invisibility = 0
 		O.canmove = 1
-		O.name = AI.name
+		O.SetName(AI.name)
 		O.real_name = AI.real_name
 		O.anchored = 1
 		O.aiRestorePowerRoutine = 0
@@ -1649,11 +1645,11 @@
 		src.occupant = O
 		if(AI.mind)
 			AI.mind.transfer_to(O)
-		AI.name = "Inactive AI"
+		AI.SetName("Inactive AI")
 		AI.real_name = "Inactive AI"
 		AI.icon_state = "ai-empty"
 		spawn(duration)
-			AI.name = O.name
+			AI.SetName(O.name)
 			AI.real_name = O.real_name
 			if(O.mind)
 				O.mind.transfer_to(AI)

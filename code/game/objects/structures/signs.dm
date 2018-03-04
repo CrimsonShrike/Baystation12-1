@@ -24,7 +24,7 @@
 	if(isScrewdriver(tool) && !istype(src, /obj/structure/sign/double))
 		to_chat(user, "You unfasten the sign with your [tool.name].")
 		var/obj/item/sign/S = new(src.loc)
-		S.name = name
+		S.SetName(name)
 		S.desc = desc
 		S.icon_state = icon_state
 		S.sign_state = icon_state
@@ -53,7 +53,7 @@
 			if("West")
 				S.pixel_x = -32
 			else return
-		S.name = name
+		S.SetName(name)
 		S.desc = desc
 		S.icon_state = sign_state
 		to_chat(user, "You fasten \the [S] with your [tool].")
@@ -161,6 +161,14 @@
 /obj/structure/sign/warning/nosmoking_2
 	name = "\improper NO SMOKING"
 	icon_state = "nosmoking2"
+
+/obj/structure/sign/warning/nosmoking_burned
+	name = "\improper NO SMOKING"
+	icon_state = "nosmoking2_b"
+
+/obj/structure/sign/warning/nosmoking_burned/Initialize()
+	. = ..()
+	desc += " It looks charred."
 
 /obj/structure/sign/warning/smoking
 	name = "\improper SMOKING"
@@ -424,3 +432,9 @@
 	desc = "Клан паука - органиазаци&#255;, в которой обучаютс&#255; лучшие наемные убийцы изведанного космоса. Веро&#255тно, мне повезло, если &#255; знаю это."
 	icon = 'icons/obj/infinity_decals.dmi'
 	icon_state = "spider_clan"
+
+/obj/structure/sign/fifthfleet
+	name = "\improper Fifth Fleet"
+	desc = "Недавно созданный, оборудованный и модифицированный Пятый Флот был введен в 2550 г Ассамблеями для того, чтобы действовать как Силы Быстрого Реагирования. Хотя он еще невелик, в Пятый Флот входят одни из самых ярких умов Сил Обороны и оснащен новейшими технологиями."
+	icon = 'icons/obj/infinity_decals.dmi'
+	icon_state = "fifthfleet"

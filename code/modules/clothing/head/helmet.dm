@@ -7,8 +7,9 @@
 		slot_r_hand_str = "helmet",
 		)
 	valid_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
+	slot_flags = SLOT_HEAD|SLOT_BACK
 	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
-	item_flags = THICKMATERIAL
+	item_flags = ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = HEAD
 	armor = list(melee = 50, bullet = 50, laser = 50,energy = 25, bomb = 30, bio = 0, rad = 0)
 	flags_inv = HIDEEARS|BLOCKHEADHAIR
@@ -25,9 +26,15 @@
 	icon_state = "helmet_nt"
 
 /obj/item/clothing/head/helmet/pcrc
-	name = "\improper PCRC helmet"
-	desc = "A helmet with 'PRIVATE SECURITY' printed on the back in cyan lettering."
-	icon_state = "helmet_pcrc"
+    name = "\improper PCRC helmet"
+    desc = "A helmet with 'PRIVATE SECURITY' printed on the back in cyan lettering."
+    icon_state = "helmet_pcrc"
+
+/obj/item/clothing/head/helmet/pcrc/cover
+	starting_accessories = list(/obj/item/clothing/accessory/armor/helmcover/pcrc)
+
+/obj/item/clothing/head/helmet/saare/cover
+	starting_accessories = list(/obj/item/clothing/accessory/armor/helmcover/saare)
 
 /obj/item/clothing/head/helmet/marine
 	name = "\improper combat helmet"

@@ -302,7 +302,7 @@ datum/objective/escape
 			return 0
 
 		var/area/check_area = location.loc
-		return check_area && is_type_in_list(check_area, GLOB.using_map.post_round_safe_areas)
+		return check_area && is_type_in_list(check_area, GLOB.using_map.post_round_safe_areas) || owner.current.z in GLOB.using_map.admin_levels
 
 
 
@@ -404,7 +404,51 @@ datum/objective/harm
 datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
 
+datum/objective/terrorists
+	proc/choose_target()
+		return
 
+datum/objective/terrorists/kidnap
+	choose_target()
+		var/list/roles = list("Commanding Officer","Executive Officer","Chief Engineer",
+		"NanoTrasen Liaison","SolGov Representative",
+		"Senior Researcher","Research Supervisor","Research Director",
+		"Journalist","Investor","Independent Observer",)
+		var/list/possible_targets = list()
+		var/list/priority_targets = list()
+
+		for(var/datum/mind/possible_target in ticker.minds)
+			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && (!possible_target.special_role))
+				possible_targets += possible_target
+				for(var/role in roles)
+					if(possible_target.assigned_role == role)
+						priority_targets += possible_target
+						continue
+
+		if(priority_targets.len > 0)
+			target = pick(priority_targets)
+		else if(possible_targets.len > 0)
+			target = pick(possible_targets)
+
+		if(target && target.current)
+			explanation_text = "Ќаши наниматели хот€т, чтобы мы захватили '[target.current.real_name], [target.assigned_role]' и доставили на базу. ÷ель должна быть живой."
+		else
+			explanation_text = "Free Objective"
+		return target
+
+	check_completion()
+		if(target && target.current)
+			if (target.current.stat == 2)
+				return 0 // They're dead. Fail.
+			//if (!target.current.restrained())
+			//	return 0 // They're loose. Close but no cigar.
+
+			var/area/syndicate_mothership/elite_squad/A = locate()
+			for(var/mob/living/carbon/human/M in A)
+				if(target.current == M)
+					return 1 //They're restrained on the shuttle. Success.
+		else
+			return 0
 
 datum/objective/steal
 	var/obj/item/steal_target
@@ -420,7 +464,6 @@ datum/objective/steal
 		"a pair of magboots" = /obj/item/clothing/shoes/magboots,
 		"the [station_name()] blueprints" = /obj/item/blueprints,
 		"the multimeter" = /obj/item/device/multitool/multimeter,
-		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
 		"28 moles of phoron (full tank)" = /obj/item/weapon/tank,
 		"a sample of slime extract" = /obj/item/slime_extract,
 		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,

@@ -10,7 +10,7 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
-	flags = OBJ_ANCHORABLE
+	obj_flags = OBJ_FLAG_ANCHORABLE
 	clicksound = "button"
 	clickvol = 40
 
@@ -64,6 +64,7 @@
 	emagged = 0 //Ignores if somebody doesn't have card access to that machine.
 	var/seconds_electrified = 0 //Shock customers like an airlock.
 	var/shoot_inventory = 0 //Fire items at customers! We're broken!
+	var/shooting_chance = 2 //The chance that items are being shot per tick
 
 	var/scan_id = 1
 	var/obj/item/weapon/coin/coin
@@ -197,7 +198,7 @@
 		if(src.panel_open)
 			attack_hand(user)
 		return
-	else if((flags & OBJ_ANCHORABLE) && isWrench(W))
+	else if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(W))
 		if(src.panel_open)
 			wrench_floor_bolts(user)
 			power_change()
@@ -532,7 +533,7 @@
 		src.speak(slogan)
 		src.last_slogan = world.time
 
-	if(src.shoot_inventory && prob(2))
+	if(src.shoot_inventory && prob(shooting_chance))
 		src.throw_item()
 
 	return
@@ -578,7 +579,7 @@
 	if(!target)
 		return 0
 
-	for(var/datum/stored_items/vending_products/R in src.product_records)
+	for(var/datum/stored_items/vending_products/R in shuffle(src.product_records))
 		throw_item = R.get_product(loc)
 		if (throw_item)
 			break
@@ -891,7 +892,8 @@
 	icon_state = "wallmed"
 	icon_deny = "wallmed-deny"
 	density = 0 //It is wall-mounted, and thus, not dense. --Superxpdude
-	products = list(/obj/item/stack/medical/bruise_pack = 2,/obj/item/stack/medical/ointment = 2,/obj/item/weapon/reagent_containers/hypospray/autoinjector = 4)
+	products = list(/obj/item/stack/medical/bruise_pack = 3, /obj/item/stack/medical/ointment = 3, /obj/item/weapon/reagent_containers/hypospray/autoinjector = 6,
+					/obj/item/weapon/reagent_containers/syringe/antitoxin = 2, /obj/item/weapon/reagent_containers/syringe/antiviral = 2)
 	contraband = list(/obj/item/weapon/reagent_containers/syringe/antitoxin = 4,/obj/item/weapon/reagent_containers/syringe/antiviral = 4,/obj/item/weapon/reagent_containers/pill/tox = 1)
 
 /obj/machinery/vending/wallmed2
@@ -901,9 +903,8 @@
 	icon_state = "wallmed"
 	icon_deny = "wallmed-deny"
 	density = 0 //It is wall-mounted, and thus, not dense. --Superxpdude
-	products = list(/obj/item/weapon/reagent_containers/hypospray/autoinjector = 5,/obj/item/weapon/reagent_containers/syringe/antitoxin = 1,/obj/item/stack/medical/bruise_pack = 3,
-					/obj/item/stack/medical/ointment =3)
-	contraband = list(/obj/item/weapon/reagent_containers/pill/tox = 3, /obj/item/weapon/reagent_containers/hypospray/autoinjector/pain = 2)
+	products = list(/obj/item/weapon/reagent_containers/hypospray/autoinjector = 4, /obj/item/stack/medical/bruise_pack = 2,/obj/item/stack/medical/ointment = 2)
+	contraband = list(/obj/item/weapon/reagent_containers/pill/tox = 3, /obj/item/weapon/reagent_containers/hypospray/autoinjector/pain = 2, /obj/item/weapon/reagent_containers/syringe/antitoxin = 1)
 
 /obj/machinery/vending/security
 	name = "SecTech"
